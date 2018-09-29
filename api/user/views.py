@@ -1,0 +1,57 @@
+from typing import List
+
+from molten import (
+    HTTP_404, HTTPError, schema, Field
+)
+from molten.contrib.sqlalchemy import (
+    Session
+)
+
+from .models import User
+from typing import Optional
+
+
+@schema
+class UserSchema:
+    id: int = Field(response_only=True)
+    email_address: Optional[str]
+    display_name: Optional[str]
+    title: Optional[str]
+
+
+def list_users(session: Session) -> List[UserSchema]:
+    user_obs = session.query(User).all()
+    return [
+        UserSchema(
+            id=ob.id,
+            email_address=ob.email_address,
+            display_name=ob.display_name,
+            title=ob.title
+        ) for ob in user_obs
+    ]
+
+
+def create_user(user: UserSchema, session: Session) -> UserSchema:
+    user_ob = User(
+        email_address=user.email_address,
+        display_name=user.display_name,
+        title=user.title
+    )
+    session.add(user_ob)
+    session.flush()
+
+    user.id = user_ob.id
+    return user
+
+
+def get_user(user_id: int, session: Session) -> UserSchema:
+    ob = session.query(User).get(user_id)
+    if ob is None:
+        raise HTTPError(HTTP_404, {"error": f"user {user_id} not found"})
+
+    return UserSchema(
+        id=ob.id,
+        email_address=ob.email_address,
+        display_name=ob.display_name,
+        title=ob.title
+    )
