@@ -6,13 +6,12 @@ from molten import (
 from molten import Route, Include
 from molten.contrib.sqlalchemy import (
     SQLAlchemyEngineComponent, SQLAlchemyMiddleware,
-    SQLAlchemySessionComponent
-)
+    SQLAlchemySessionComponent,
+    EngineData)
 from molten.contrib.toml_settings import TOMLSettingsComponent
 from molten.openapi import HTTPSecurityScheme, Metadata, OpenAPIHandler, OpenAPIUIHandler
-
+from db import Base
 from api.user.views import list_users, create_user, get_user, delete_user
-from db import setup_db
 
 get_docs = OpenAPIUIHandler()
 
@@ -61,3 +60,13 @@ def create_app(_components=None, _middleware=None, _routes=None):
 
     setup_db(app)
     return app
+
+
+def init_db(engine_data: EngineData):
+    Base.metadata.create_all(engine_data.engine)
+
+
+def setup_db(app):
+    # Initialize the DB by injecting EngineData into initdb and calling it.
+    resolver = app.injector.get_resolver()
+    resolver.resolve(init_db)()
