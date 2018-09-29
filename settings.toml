@@ -1,2 +1,5 @@
 [common]
 database_engine_dsn = "sqlite:///db.sqlite3"
+
+[test]
+database_engine_dsn = "sqlite:///test.db.sqlite3"
