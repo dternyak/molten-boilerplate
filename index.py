@@ -21,8 +21,8 @@ get_docs = OpenAPIUIHandler()
 
 get_schema = OpenAPIHandler(
     metadata=Metadata(
-        title="Grant API",
-        description="An API for Grant.io.",
+        title="Molten-Boilerplate API",
+        description="An API for Molten-Boilerplate.",
         version="0.0.0",
     ),
     security_schemes=[
