@@ -1,14 +1,14 @@
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Optional, Any
 
 from molten import (
-    HTTP_404, HTTPError, schema, Field, HTTP_201, HTTP_204
+    HTTP_404, HTTPError, schema, Field, HTTP_201, HTTP_204,
 )
 from molten.contrib.sqlalchemy import (
     Session
 )
 
 from .models import User
-
+# from ..comment.views import CommentSchema
 
 @schema
 class UserSchema:
@@ -16,6 +16,7 @@ class UserSchema:
     email_address: Optional[str]
     display_name: Optional[str]
     title: Optional[str]
+    # comments: List[CommentSchema]
 
 
 def list_users(session: Session) -> List[UserSchema]:
@@ -25,7 +26,8 @@ def list_users(session: Session) -> List[UserSchema]:
             id=ob.id,
             email_address=ob.email_address,
             display_name=ob.display_name,
-            title=ob.title
+            title=ob.title,
+            # comments=ob.comments
         ) for ob in user_obs
     ]
 
@@ -40,6 +42,7 @@ def create_user(user: UserSchema, session: Session) -> Tuple[str, UserSchema]:
     session.flush()
 
     user.id = user_ob.id
+    # user.comments = user_ob.comments
     return HTTP_201, user
 
 
@@ -57,5 +60,6 @@ def get_user(user_id: int, session: Session) -> UserSchema:
         id=ob.id,
         email_address=ob.email_address,
         display_name=ob.display_name,
-        title=ob.title
+        title=ob.title,
+        # comments=ob.comments
     )
