@@ -1,5 +1,11 @@
 # Molten-Boilerplate
 
+## What's included?
+- SQLAlchemy
+- alembic
+- camelCase API
+- py.test
+
 ## Usage
 Install requirements
 

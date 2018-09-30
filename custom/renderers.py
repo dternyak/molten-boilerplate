@@ -5,7 +5,7 @@ from typing import Any
 from molten import Response
 from molten.validation import dump_schema, is_schema
 
-from animal_case.convert import parse_keys
+from .animal_case.convert import parse_keys
 
 
 class JSONRenderer:

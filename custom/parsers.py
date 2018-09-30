@@ -4,7 +4,7 @@ from typing import Any
 from molten import RequestBody
 from molten.errors import ParseError
 
-from animal_case.convert import parse_keys
+from .animal_case.convert import parse_keys
 
 
 class JSONParser:
