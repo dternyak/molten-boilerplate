@@ -18,3 +18,4 @@ SQLAlchemy==1.2.12
 toml==0.9.6
 typing-extensions==3.6.5
 typing-inspect==0.3.1
+wsgicors==0.7.0

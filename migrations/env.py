@@ -23,9 +23,9 @@ config.set_main_option("sqlalchemy.url", toml_data["common"]["database_engine_ds
 # add your model's MetaData object here
 # for 'autogenerate' support
 sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), '..')))
-from api.user.models import User
+from db import Base
 
-target_metadata = [User.metadata]
+target_metadata = Base.metadata
 
 
 # other values from the config, defined by the needs of env.py,

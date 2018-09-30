@@ -1,3 +1,4 @@
 from index import create_app
+from wsgicors import CORS
 
-app = create_app()
+app = CORS(create_app(), headers="*", methods="*", origin="*", maxage="86400")

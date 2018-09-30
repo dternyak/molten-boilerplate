@@ -1,5 +1,4 @@
-from typing import List, Tuple
-from typing import Optional
+from typing import List, Tuple, Optional
 
 from molten import (
     HTTP_404, HTTPError, schema, Field, HTTP_201, HTTP_204

@@ -3,11 +3,17 @@ def test_users(client, app, auth):
     assert response.data == "[]"
 
     response = client.post(app.reverse_uri("create_user"), auth=auth, json={
-        "email_address": "wow@gmail.com",
+        "emailAddress": "wow@gmail.com",
+    })
+    assert response.status_code == 201
+
+    response = client.post(app.reverse_uri("create_user"), auth=auth, json={
+        "emailAddress": "wow2@gmail.com",
     })
     assert response.status_code == 201
 
     user = response.json()
+
     response = client.get(
         app.reverse_uri("get_user", user_id=user["id"]),
         auth=auth,

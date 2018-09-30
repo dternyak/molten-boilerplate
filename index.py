@@ -10,8 +10,12 @@ from molten.contrib.sqlalchemy import (
     EngineData)
 from molten.contrib.toml_settings import TOMLSettingsComponent
 from molten.openapi import HTTPSecurityScheme, Metadata, OpenAPIHandler, OpenAPIUIHandler
-from db import Base
+
+from api.comment.views import list_comments, create_comment, get_comment, delete_comment
 from api.user.views import list_users, create_user, get_user, delete_user
+from db import Base
+from molten import URLEncodingParser, MultiPartParser, JSONRenderer, JSONParser
+from utils import JSONParser, JSONRenderer
 
 get_docs = OpenAPIUIHandler()
 
@@ -46,19 +50,32 @@ routes: List[Union[Route, Include]] = [
         Route("/{user_id}", get_user),
     ]),
 
+    Include("/v1/comments", [
+        Route("", list_comments),
+        Route("", create_comment, method="POST"),
+        Route("/{comment_id}", delete_comment, method="DELETE"),
+        Route("/{comment_id}", get_comment),
+    ]),
+
     Route("/_docs", get_docs),
     Route("/_schema", get_schema),
 ]
 
 
-def create_app(_components=None, _middleware=None, _routes=None):
+def create_app(_components=None, _middleware=None, _routes=None, _setup_db=False):
     app = App(
         components=_components or components,
         middleware=_middleware or middleware,
         routes=_routes or routes,
+        parsers=[
+            JSONParser(),
+            URLEncodingParser(),
+            MultiPartParser(),
+        ],
+        renderers=[JSONRenderer()]
     )
-
-    setup_db(app)
+    if _setup_db:
+        setup_db(app)
     return app
 
 
