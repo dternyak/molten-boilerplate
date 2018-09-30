@@ -45,3 +45,6 @@ $ invoke start
 ```
 $ invoke test --cov --verbose
 ```
+
+## TODO
+- [ ] Integrate pre-commit linting
