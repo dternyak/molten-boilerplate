@@ -1,7 +1,7 @@
 from typing import List, Union
 
 from molten import (
-    App, Component, ResponseRendererMiddleware, Middleware
+    App, Component, ResponseRendererMiddleware, Middleware, SettingsComponent
 )
 from molten import Route, Include
 from molten import URLEncodingParser, MultiPartParser
@@ -15,6 +15,8 @@ from api.comment.views import list_comments, create_comment, get_comment, delete
 from api.user.views import list_users, create_user, get_user, delete_user
 from custom import JSONParser, JSONRenderer
 from db import Base
+import settings
+
 
 get_docs = OpenAPIUIHandler()
 
@@ -31,9 +33,10 @@ get_schema = OpenAPIHandler(
 )
 
 components: List[Component] = [
-    TOMLSettingsComponent(),
+    # TOMLSettingsComponent(),
     SQLAlchemyEngineComponent(),
     SQLAlchemySessionComponent(),
+    SettingsComponent(settings.SETTINGS)
 ]
 
 middleware: List[Middleware] = [
@@ -42,14 +45,14 @@ middleware: List[Middleware] = [
 ]
 
 routes: List[Union[Route, Include]] = [
-    Include("/v1/users", [
+    Include("/api/v1/users", [
         Route("", list_users),
         Route("", create_user, method="POST"),
         Route("/{user_id}", delete_user, method="DELETE"),
         Route("/{user_id}", get_user),
     ]),
 
-    Include("/v1/comments", [
+    Include("/api/v1/comments", [
         Route("", list_comments),
         Route("", create_comment, method="POST"),
         Route("/{comment_id}", delete_comment, method="DELETE"),
