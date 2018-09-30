@@ -13,6 +13,9 @@ def test(c, cov=False, verbose=False):
 
 
 @task
-def start(c):
+def start(c, log_level='info'):
     c.run("export ENVIRONMENT=common")
-    c.run('gunicorn --reload app:app')
+    gunicorn_command = 'gunicorn --reload app:app'
+    gunicorn_command += ' --log-level={}'.format(log_level)
+    print(gunicorn_command)
+    c.run(gunicorn_command)

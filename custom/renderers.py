@@ -23,7 +23,9 @@ class JSONRenderer:
                 response_data = dump_schema(response_data)
             except TypeError:
                 pass
-            response_data = parse_keys(response_data, types='camel')
+            # TODO - fix hack to prevent camel casing openAPI data
+            if not response_data.get('openapi'):
+                response_data = parse_keys(response_data, types='camel')
         content = json.dumps(response_data, default=self.default)
         return Response(status, content=content, headers={
             "content-type": "application/json; charset=utf-8",

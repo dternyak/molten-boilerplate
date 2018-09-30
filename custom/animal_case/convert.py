@@ -43,7 +43,9 @@ def keys_to_camel_case(content):
     :param content: dict
     :return: dict
     """
-    return {to_camel_case(key): value for key, value in _unpack(dict(content))}
+    return {
+        to_camel_case(key): value for key, value in _unpack(dict(content))
+    }
 
 
 def parse_keys(data=None, types='snake'):
