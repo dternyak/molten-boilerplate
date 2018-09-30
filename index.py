@@ -4,6 +4,7 @@ from molten import (
     App, Component, ResponseRendererMiddleware, Middleware
 )
 from molten import Route, Include
+from molten import URLEncodingParser, MultiPartParser
 from molten.contrib.sqlalchemy import (
     SQLAlchemyEngineComponent, SQLAlchemyMiddleware,
     SQLAlchemySessionComponent,
@@ -13,9 +14,8 @@ from molten.openapi import HTTPSecurityScheme, Metadata, OpenAPIHandler, OpenAPI
 
 from api.comment.views import list_comments, create_comment, get_comment, delete_comment
 from api.user.views import list_users, create_user, get_user, delete_user
+from custom import JSONParser, JSONRenderer
 from db import Base
-from molten import URLEncodingParser, MultiPartParser, JSONRenderer, JSONParser
-from utils import JSONParser, JSONRenderer
 
 get_docs = OpenAPIUIHandler()
 
