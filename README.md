@@ -4,7 +4,7 @@
 - SQLAlchemy
 - alembic
 - camelCase API
-- py.test
+- py.test (with coverage)
 
 ## Usage
 Install requirements

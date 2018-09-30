@@ -1,7 +1,9 @@
 alembic==1.0.0
 atomicwrites==1.2.1
 attrs==18.2.0
+coverage==4.5.1
 gunicorn==19.9.0
+invoke==1.2.0
 Mako==1.0.7
 MarkupSafe==1.0
 molten==0.5.1
@@ -11,6 +13,7 @@ pluggy==0.7.1
 psycopg2==2.7.5
 py==1.6.0
 pytest==3.8.1
+pytest-cov==2.6.0
 python-dateutil==2.7.3
 python-editor==1.0.3
 six==1.11.0
