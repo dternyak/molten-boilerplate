@@ -8,7 +8,6 @@ from molten import URLEncodingParser, MultiPartParser
 from molten.contrib.sqlalchemy import (
     SQLAlchemyEngineComponent, SQLAlchemyMiddleware,
     SQLAlchemySessionComponent, EngineData)
-from molten.contrib.toml_settings import TOMLSettingsComponent
 from molten.openapi import HTTPSecurityScheme, Metadata, OpenAPIHandler, OpenAPIUIHandler
 
 from api.comment.views import list_comments, create_comment, get_comment, delete_comment
