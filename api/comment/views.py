@@ -7,6 +7,7 @@ from molten import (
 from molten.contrib.sqlalchemy import (
     Session
 )
+import logging
 
 from .models import Comment
 
@@ -21,9 +22,13 @@ class CommentSchema:
 
 def list_comments(session: Session) -> List[CommentSchema]:
     comments = session.query(Comment).all()
+    logging.info(comments)
     return [
         CommentSchema(
-            **ob
+            id=ob.id,
+            content=ob.content,
+            user_id=ob.user_id,
+            date_created=ob.date_created
         ) for ob in comments
     ]
 

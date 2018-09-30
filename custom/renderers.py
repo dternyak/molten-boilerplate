@@ -24,8 +24,9 @@ class JSONRenderer:
             except TypeError:
                 pass
             # TODO - fix hack to prevent camel casing openAPI data
-            if not response_data.get('openapi'):
-                response_data = parse_keys(response_data, types='camel')
+            if type(response_data) == dict:
+                if not response_data.get('openapi'):
+                    response_data = parse_keys(response_data, types='camel')
         content = json.dumps(response_data, default=self.default)
         return Response(status, content=content, headers={
             "content-type": "application/json; charset=utf-8",

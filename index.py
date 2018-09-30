@@ -7,13 +7,14 @@ from molten import Route, Include
 from molten import URLEncodingParser, MultiPartParser
 from molten.contrib.sqlalchemy import (
     SQLAlchemyEngineComponent, SQLAlchemyMiddleware,
-    SQLAlchemySessionComponent)
+    SQLAlchemySessionComponent, EngineData)
 from molten.contrib.toml_settings import TOMLSettingsComponent
 from molten.openapi import HTTPSecurityScheme, Metadata, OpenAPIHandler, OpenAPIUIHandler
 
 from api.comment.views import list_comments, create_comment, get_comment, delete_comment
 from api.user.views import list_users, create_user, get_user, delete_user
 from custom import JSONParser, JSONRenderer
+from db import Base
 
 get_docs = OpenAPIUIHandler()
 
@@ -60,6 +61,16 @@ routes: List[Union[Route, Include]] = [
 ]
 
 
+def init_db(engine_data: EngineData):
+    Base.metadata.create_all(engine_data.engine)
+
+
+def setup_db(app):
+    # Initialize the DB by injecting EngineData into init_db and calling it.
+    resolver = app.injector.get_resolver()
+    resolver.resolve(init_db)()
+
+
 def create_app(_components=None, _middleware=None, _routes=None):
     app = App(
         components=_components or components,
@@ -72,4 +83,5 @@ def create_app(_components=None, _middleware=None, _routes=None):
         ],
         renderers=[JSONRenderer()]
     )
+    setup_db(app)
     return app

@@ -1,20 +1,11 @@
 import pytest
+import toml
 from molten import testing
-from molten.contrib.sqlalchemy import (
-    EngineData)
 
-from db import Base
 from index import create_app
 
-
-def init_db(engine_data: EngineData):
-    Base.metadata.create_all(engine_data.engine)
-
-
-def setup_db(app):
-    # Initialize the DB by injecting EngineData into init_db and calling it.
-    resolver = app.injector.get_resolver()
-    resolver.resolve(init_db)()
+with open("settings.toml") as conffile:
+    toml_data = toml.loads(conffile.read())
 
 
 # requires function scope so that database is removed on every tests
@@ -22,12 +13,9 @@ def setup_db(app):
 @pytest.fixture(scope="function")
 def app():
     app = create_app()
-    setup_db(app)
     yield app
     import os
-    test_db = "test.db.sqlite3"
-    os.path.isfile(test_db)
-    os.remove(test_db)
+    os.remove(toml_data["test"]["database_engine_dsn"].split('///')[1])
 
 
 @pytest.fixture(scope="function")

@@ -21,7 +21,12 @@ class UserSchema:
 def list_users(session: Session) -> List[UserSchema]:
     user_obs = session.query(User).all()
     return [
-        UserSchema(**ob) for ob in user_obs
+        UserSchema(
+            id=ob.id,
+            email_address=ob.email_address,
+            display_name=ob.display_name,
+            title=ob.title
+        ) for ob in user_obs
     ]
 
 
