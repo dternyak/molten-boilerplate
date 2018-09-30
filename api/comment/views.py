@@ -1,13 +1,12 @@
-from datetime import datetime
-from typing import List, Tuple, Optional
+import datetime
+from typing import List, Tuple
 
 from molten import (
-    HTTP_404, HTTPError, schema, Field, HTTP_201, HTTP_204, field
+    HTTP_404, HTTPError, schema, Field, HTTP_201, HTTP_204
 )
 from molten.contrib.sqlalchemy import (
     Session
 )
-import datetime
 
 from .models import Comment
 
@@ -24,10 +23,7 @@ def list_comments(session: Session) -> List[CommentSchema]:
     comments = session.query(Comment).all()
     return [
         CommentSchema(
-            id=ob.id,
-            content=ob.content,
-            user_id=ob.user_id,
-            date_created=ob.date_created
+            **ob
         ) for ob in comments
     ]
 
@@ -52,7 +48,6 @@ def delete_comment(comment_id: int, session: Session) -> Tuple[str, None]:
 
 def get_comment(comment_id: int, session: Session) -> CommentSchema:
     ob = session.query(Comment).get(comment_id)
-    # print(str(ob.date_created))
     if ob is None:
         raise HTTPError(HTTP_404, {"error": f"comment {comment_id} not found"})
 
