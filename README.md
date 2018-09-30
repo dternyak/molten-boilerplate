@@ -5,9 +5,10 @@
 - alembic
 - camelCase API
 - py.test (with coverage)
+- invoke (CLI)
 
 ## Usage
-Install requirements
+1. Install requirements
 
 ```
 virtualenv -p python3.6 venv
@@ -15,7 +16,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Adjust `settings.toml` with your `DATABASE_URL` on `common` and `test`.
+2. Adjust `settings.toml` with your `DATABASE_URL` on `common` and `test`.
 
 For now, `common` represents both production and dev.
 
@@ -35,9 +36,12 @@ alembic revision -m "New thing did" --autogenerate
 ```
 
 
-
 ### Dev
-`export ENVIRONMENT="common" &&  gunicorn --reload app:app`
+```
+$ invoke start
+```
 
 ### Test
-`export ENVIRONMENT="test" && pytest tests`    
+```
+$ invoke test --cov --verbose
+```
